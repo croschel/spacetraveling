@@ -70,7 +70,7 @@ export default function Home(props: HomeProps) {
             <a>
               <h2>{post.data.title}</h2>
               <p>{post.data.subtitle}</p>
-              <div className={styles.contentFooter}>
+              <div className={commonStyles.contentFooter}>
                 <div>
                   <FiCalendar />
                   <time>{post.first_publication_date}</time>
