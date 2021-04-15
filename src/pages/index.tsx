@@ -3,6 +3,7 @@ import { GetStaticProps } from 'next';
 import Prismic from '@prismicio/client';
 import Link from 'next/link';
 import { FiCalendar, FiUser } from 'react-icons/fi';
+import { useState } from 'react';
 import { getPrismicClient } from '../services/prismic';
 
 import commonStyles from '../styles/common.module.scss';
@@ -29,13 +30,42 @@ interface HomeProps {
 export default function Home(props: HomeProps) {
   const { postsPagination } = props;
   const { results, next_page } = postsPagination;
+  const [posts, setPosts] = useState(results);
+  const [existsMorePage, setExistsMorePage] = useState(next_page !== null);
 
-  const loadMorePosts = () => {};
+  const loadMorePosts = () => {
+    fetch(next_page).then(response =>
+      response.json().then(data => {
+        if (!data.next_page) {
+          setExistsMorePage(false);
+        }
+        const dataResults = data.results.map(post => {
+          return {
+            uid: post.uid,
+            first_publication_date: new Date(
+              post.first_publication_date
+            ).toLocaleDateString('pt-BR', {
+              day: '2-digit',
+              month: 'short',
+              year: 'numeric',
+            }),
+            data: {
+              title: post.data.title,
+              subtitle: post.data.subtitle,
+              author: post.data.author,
+            },
+          };
+        });
+
+        setPosts([...posts, ...dataResults]);
+      })
+    );
+  };
 
   return (
     <main className={commonStyles.container}>
       <div className={styles.postsContainer}>
-        {results.map(post => (
+        {posts.map(post => (
           <Link key={post.uid} href={`/post/${post.uid}`}>
             <a>
               <h2>{post.data.title}</h2>
@@ -53,8 +83,8 @@ export default function Home(props: HomeProps) {
             </a>
           </Link>
         ))}
-        {next_page !== null && (
-          <button type="button" onClick={() => {}}>
+        {existsMorePage && (
+          <button type="button" onClick={() => loadMorePosts()}>
             Carregar mais posts
           </button>
         )}
