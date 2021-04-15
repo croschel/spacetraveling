@@ -23,14 +23,18 @@ interface PostPagination {
 interface HomeProps {
   postsPagination: PostPagination;
 }
-
-// export default function Home() {
-//   // TODO
-// }
-
-// export const getStaticProps = async () => {
-//   // const prismic = getPrismicClient();
-//   // const postsResponse = await prismic.query(TODO);
-
-//   // TODO
-// };
+export default function Home() {
+  return (
+    <div>
+      <h1>Home</h1>
+    </div>
+  );
+}
+export const getStaticProps: GetStaticProps = async () => {
+  const prismic = getPrismicClient();
+  // const postsResponse = await prismic.query(TODO);
+  // TODO;
+  return {
+    props: {},
+  };
+};
