@@ -1,1 +1,49 @@
 // TODO
+.postsContainer {
+  margin: 2rem 0;
+
+  a {
+    display: block;
+    &:hover {
+      filter: brightness(1.4);
+    }
+
+    h2 {
+      line-height: 2rem;
+    }
+
+    p,
+    time {
+      color: var(--info);
+    }
+  }
+  button {
+    border: 0;
+    background: transparent;
+    color: var(--highlight);
+    font-weight: 600;
+
+    margin-top: 2rem;
+    transition: color 0.2s;
+
+    &:hover {
+      filter: brightness(0.8);
+      text-decoration: underline;
+    }
+  }
+}
+
+.contentFooter {
+  display: flex;
+  flex-direction: row;
+  margin: 1rem 0 2rem;
+
+  div {
+    display: flex;
+    flex-direction: row;
+
+    & + div {
+      margin-left: 1rem;
+    }
+  }
+}
