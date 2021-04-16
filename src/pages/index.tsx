@@ -8,6 +8,7 @@ import { getPrismicClient } from '../services/prismic';
 
 import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
+import Header from '../components/Header';
 
 interface Post {
   uid?: string;
@@ -63,33 +64,36 @@ export default function Home(props: HomeProps) {
   };
 
   return (
-    <main className={commonStyles.container}>
-      <div className={styles.postsContainer}>
-        {posts.map(post => (
-          <Link key={post.uid} href={`/post/${post.uid}`}>
-            <a>
-              <h2>{post.data.title}</h2>
-              <p>{post.data.subtitle}</p>
-              <div className={commonStyles.contentFooter}>
-                <div>
-                  <FiCalendar />
-                  <time>{post.first_publication_date}</time>
+    <>
+      <Header />
+      <main className={commonStyles.container}>
+        <div className={styles.postsContainer}>
+          {posts.map(post => (
+            <Link key={post.uid} href={`/post/${post.uid}`}>
+              <a>
+                <h2>{post.data.title}</h2>
+                <p>{post.data.subtitle}</p>
+                <div className={commonStyles.contentFooter}>
+                  <div>
+                    <FiCalendar />
+                    <time>{post.first_publication_date}</time>
+                  </div>
+                  <div>
+                    <FiUser />
+                    <p>{post.data.author}</p>
+                  </div>
                 </div>
-                <div>
-                  <FiUser />
-                  <p>{post.data.author}</p>
-                </div>
-              </div>
-            </a>
-          </Link>
-        ))}
-        {existsMorePage && (
-          <button type="button" onClick={() => loadMorePosts()}>
-            Carregar mais posts
-          </button>
-        )}
-      </div>
-    </main>
+              </a>
+            </Link>
+          ))}
+          {existsMorePage && (
+            <button type="button" onClick={() => loadMorePosts()}>
+              Carregar mais posts
+            </button>
+          )}
+        </div>
+      </main>
+    </>
   );
 }
 export const getStaticProps: GetStaticProps = async () => {
