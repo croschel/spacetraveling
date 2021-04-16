@@ -10,6 +10,7 @@ import { getPrismicClient } from '../../services/prismic';
 import commonStyles from '../../styles/common.module.scss';
 import styles from './post.module.scss';
 import Header from '../../components/Header';
+import { formatDate } from '../../utils';
 
 interface Post {
   first_publication_date: string | null;
@@ -41,9 +42,10 @@ export default function Post({ post }: PostProps) {
     const calculatedValue = textSize / 200;
     const result = Math.round(calculatedValue * 100);
 
-    return Math.ceil(result / 100);
+    return `${Math.ceil(result / 100)} min`;
   };
 
+  const formattedDate = formatDate(post.first_publication_date);
   return (
     <>
       <Header />
@@ -63,7 +65,7 @@ export default function Post({ post }: PostProps) {
             <div className={commonStyles.contentFooter}>
               <div>
                 <FiCalendar />
-                <time>{post.first_publication_date}</time>
+                <time>{formattedDate}</time>
               </div>
               <div>
                 <FiUser />
@@ -71,7 +73,7 @@ export default function Post({ post }: PostProps) {
               </div>
               <div>
                 <FiClock />
-                <p>{`${calculateTextTimeReading()} min`}</p>
+                <p>{calculateTextTimeReading()}</p>
               </div>
             </div>
             <div
@@ -126,14 +128,7 @@ export const getStaticProps: GetStaticProps = async context => {
   });
   // console.log('test :: ', JSON.stringify(test));
   const post = {
-    first_publication_date: new Date(first_publication_date).toLocaleDateString(
-      'pt-BR',
-      {
-        day: '2-digit',
-        month: 'long',
-        year: 'numeric',
-      }
-    ),
+    first_publication_date,
     data: {
       title: data.title,
       banner: {

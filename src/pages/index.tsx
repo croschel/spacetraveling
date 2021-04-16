@@ -9,6 +9,7 @@ import { getPrismicClient } from '../services/prismic';
 import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
 import Header from '../components/Header';
+import { formatDate } from '../utils';
 
 interface Post {
   uid?: string;
@@ -43,13 +44,7 @@ export default function Home(props: HomeProps) {
         const dataResults = data.results.map(post => {
           return {
             uid: post.uid,
-            first_publication_date: new Date(
-              post.first_publication_date
-            ).toLocaleDateString('pt-BR', {
-              day: '2-digit',
-              month: 'short',
-              year: 'numeric',
-            }),
+            first_publication_date: post.first_publication_date,
             data: {
               title: post.data.title,
               subtitle: post.data.subtitle,
@@ -76,7 +71,7 @@ export default function Home(props: HomeProps) {
                 <div className={commonStyles.contentFooter}>
                   <div>
                     <FiCalendar />
-                    <time>{post.first_publication_date}</time>
+                    <time>{formatDate(post.first_publication_date)}</time>
                   </div>
                   <div>
                     <FiUser />
@@ -109,13 +104,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const results = postsResponse.results.map(post => {
     return {
       uid: post.uid,
-      first_publication_date: new Date(
-        post.first_publication_date
-      ).toLocaleDateString('pt-BR', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-      }),
+      first_publication_date: post.first_publication_date,
       data: {
         title: post.data.title,
         subtitle: post.data.subtitle,
